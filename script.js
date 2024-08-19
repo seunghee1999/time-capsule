@@ -1,115 +1,115 @@
-// script.js
-function navigate(page) {
-    const content = document.getElementById('content');
-    switch(page) {
-        case 'home':
-            content.innerHTML = `
-                <h1>미래에 전하는 특별한 메시지, 타임캡슐 서비스</h1>
-                <p>소중한 추억을 담아 미래의 누군가에게 전달하세요.</p>
-                <button onclick="navigate('about')">서비스 소개</button>
-                <button onclick="navigate('howto')">이용 방법</button>
-            `;
-            break;
-        case 'create':
-            content.innerHTML = `
-                <h2>새 타임캡슐 만들기</h2>
-                <form id="createForm">
-                    <select>
-                        <option>편지</option>
-                        <option>소형 물건</option>
-                        <option>중형 물건</option>
-                    </select>
-                    <input type="text" placeholder="받는 사람">
-                    <textarea placeholder="메시지 내용"></textarea>
-                    <input type="date" placeholder="개봉 날짜">
-                    <select>
-                        <option>단기 보관</option>
-                        <option>장기 보관 (구독)</option>
-                    </select>
-                    <button type="submit">생성하기</button>
-                </form>
-            `;
-            document.getElementById('createForm').onsubmit = function(e) {
-                e.preventDefault();
-                alert('타임캡슐이 생성되었습니다!');
-            };
-            break;
-        case 'dashboard':
-            content.innerHTML = `
-                <h2>내 타임캡슐</h2>
-                <ul>
-                    <li>
-                        타임캡슐 1 - 개봉 날짜: 2025-08-19
-                        <button onclick="showDetails(1)">상세 보기</button>
-                        <button onclick="showShipping(1)">배송 현황</button>
-                    </li>
-                    <li>
-                        타임캡슐 2 - 개봉 날짜: 2030-01-01
-                        <button onclick="showDetails(2)">상세 보기</button>
-                        <button onclick="showShipping(2)">배송 현황</button>
-                    </li>
-                </ul>
-            `;
-            break;
-        case 'shop':
-            content.innerHTML = `
-                <h2>타임캡슐 키트</h2>
-                <div class="product-list">
-                    <div class="product-item">
-                        <img src="placeholder.jpg" alt="기본 키트">
-                        <h3>기본 키트</h3>
-                        <p>가격: 10,000원</p>
-                        <button onclick="purchaseKit('basic')">구매하기</button>
-                    </div>
-                    <div class="product-item">
-                        <img src="placeholder.jpg" alt="프리미엄 키트">
-                        <h3>프리미엄 키트</h3>
-                        <p>가격: 20,000원</p>
-                        <button onclick="purchaseKit('premium')">구매하기</button>
-                    </div>
-                </div>
-            `;
-            break;
-        case 'login':
-            content.innerHTML = `
-                <h2>로그인</h2>
-                <form id="loginForm">
-                    <input type="email" placeholder="이메일">
-                    <input type="password" placeholder="비밀번호">
-                    <button type="submit">로그인</button>
-                </form>
-                <p>계정이 없으신가요? <a href="#" onclick="navigate('signup')">회원가입</a></p>
-            `;
-            document.getElementById('loginForm').onsubmit = function(e) {
-                e.preventDefault();
-                alert('로그인되었습니다!');
-            };
-            break;
-        default:
-            content.innerHTML = '<h2>페이지를 찾을 수 없습니다.</h2>';
-    }
-}
+// DOM이 로드된 후 실행
+document.addEventListener('DOMContentLoaded', function() {
+    // 필요한 HTML 요소 생성
+    const container = document.createElement('div');
+    container.className = 'preview-container';
+    container.style.cssText = `
+        font-family: Arial, sans-serif;
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        background-color: #f0f0f0;
+    `;
 
-// 초기 페이지 로드
-navigate('home');
+    const header = document.createElement('div');
+    header.style.cssText = `
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        background-color: #fff;
+        border-radius: 4px;
+        overflow: hidden;
+    `;
 
-// 내비게이션 이벤트 리스너
-document.querySelector('nav').addEventListener('click', function(e) {
-    if(e.target.tagName === 'A') {
-        e.preventDefault();
-        navigate(e.target.getAttribute('href').slice(1));
-    }
+    const codeIcon = document.createElement('div');
+    codeIcon.innerHTML = '&lt;/&gt;';
+    codeIcon.style.cssText = `
+        background-color: #ddd;
+        padding: 10px;
+        font-family: monospace;
+    `;
+
+    const title = document.createElement('div');
+    title.style.cssText = `
+        flex-grow: 1;
+        padding: 10px;
+    `;
+    title.innerHTML = `
+        <h2 style="margin: 0; font-size: 18px;">타임캡슐 서비스 - 웹사이트 미리보기</h2>
+        <p style="margin: 5px 0 0; font-size: 14px; color: #666;">클릭하여 구성 요소를 엽니다.</p>
+    `;
+
+    const content = document.createElement('div');
+    content.style.cssText = `
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 4px;
+    `;
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.placeholder = 'https://your-website-url.com';
+    input.style.cssText = `
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box;
+    `;
+
+    const button = document.createElement('button');
+    button.textContent = '미리보기';
+    button.style.cssText = `
+        background-color: #0056b3;
+        color: #fff;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+    `;
+
+    const previewArea = document.createElement('div');
+    previewArea.style.cssText = `
+        margin-top: 20px;
+        border: 2px dashed #ddd;
+        height: 300px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #666;
+        font-style: italic;
+    `;
+    previewArea.textContent = '여기에 웹사이트 미리보기가 표시됩니다.';
+    previewArea.style.display = 'none';
+
+    // 요소들을 조합
+    header.appendChild(codeIcon);
+    header.appendChild(title);
+    content.appendChild(input);
+    content.appendChild(button);
+    content.appendChild(previewArea);
+    container.appendChild(header);
+    container.appendChild(content);
+
+    // 컨테이너를 body에 추가
+    document.body.appendChild(container);
+
+    // 버튼 클릭 이벤트 처리
+    button.addEventListener('click', function() {
+        const url = input.value.trim();
+        if (url) {
+            previewArea.style.display = 'flex';
+            previewArea.textContent = `${url} 의 미리보기를 로드 중...`;
+            // 여기에 실제 미리보기 로직을 구현할 수 있습니다.
+            // 예: iframe 사용 또는 서버에서 스크린샷 가져오기
+            setTimeout(() => {
+                previewArea.textContent = `${url}의 미리보기입니다. (실제 구현 필요)`;
+            }, 1500);
+        } else {
+            alert('유효한 URL을 입력해주세요.');
+        }
+    });
 });
-
-// 추가 함수들
-function showDetails(id) {
-    alert(`타임캡슐 ${id}의 상세 정보입니다.`);
-}
-
-function showShipping(id) {
-    alert(`타임캡슐 ${id}의 배송 현황입니다.`);
-}
-
-function purchaseKit(type) {
-    alert(`${type} 키트가 구매되었습니다!`);
-}
