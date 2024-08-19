@@ -1,115 +1,71 @@
-// DOM이 로드된 후 실행
+// Kakao SDK 초기화
+Kakao.init('YOUR_KAKAO_APP_KEY'); // 실제 앱 키로 교체하세요
+
 document.addEventListener('DOMContentLoaded', function() {
-    // 필요한 HTML 요소 생성
-    const container = document.createElement('div');
-    container.className = 'preview-container';
-    container.style.cssText = `
-        font-family: Arial, sans-serif;
-        max-width: 600px;
-        margin: 20px auto;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        background-color: #f0f0f0;
-    `;
+    // 스무스 스크롤 구현
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
 
-    const header = document.createElement('div');
-    header.style.cssText = `
-        display: flex;
-        align-items: center;
-        margin-bottom: 20px;
-        background-color: #fff;
-        border-radius: 4px;
-        overflow: hidden;
-    `;
+    // 카카오 로그인 버튼 클릭 이벤트
+    document.getElementById('kakao-login-btn').addEventListener('click', function() {
+        Kakao.Auth.login({
+            success: function(authObj) {
+                Kakao.API.request({
+                    url: '/v2/user/me',
+                    success: function(res) {
+                        alert(`${res.properties.nickname}님, 환영합니다!`);
+                        // 여기에 로그인 후 처리 로직을 추가하세요
+                    },
+                    fail: function(error) {
+                        alert('로그인 처리 중 오류가 발생했습니다.');
+                        console.log(error);
+                    }
+                });
+            },
+            fail: function(err) {
+                alert('카카오 로그인에 실패했습니다.');
+            }
+        });
+    });
 
-    const codeIcon = document.createElement('div');
-    codeIcon.innerHTML = '&lt;/&gt;';
-    codeIcon.style.cssText = `
-        background-color: #ddd;
-        padding: 10px;
-        font-family: monospace;
-    `;
+    // CTA 버튼 클릭 이벤트
+    document.querySelector('.cta-btn').addEventListener('click', function() {
+        alert('타임캡슐 만들기 페이지로 이동합니다.');
+        // 실제 구현 시 타임캡슐 생성 페이지로 리다이렉트
+    });
 
-    const title = document.createElement('div');
-    title.style.cssText = `
-        flex-grow: 1;
-        padding: 10px;
-    `;
-    title.innerHTML = `
-        <h2 style="margin: 0; font-size: 18px;">타임캡슐 서비스 - 웹사이트 미리보기</h2>
-        <p style="margin: 5px 0 0; font-size: 14px; color: #666;">클릭하여 구성 요소를 엽니다.</p>
-    `;
+    // 서비스 링크 클릭 이벤트
+    document.querySelectorAll('.service-link').forEach(function(link) {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const serviceType = this.getAttribute('data-service');
+            alert(`${serviceType} 타임캡슐 서비스를 시작합니다.`);
+            // 실제 구현 시 각 서비스 페이지로 리다이렉트
+        });
+    });
 
-    const content = document.createElement('div');
-    content.style.cssText = `
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 4px;
-    `;
+    // 문의하기 폼 제출 이벤트
+    document.getElementById('contact-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        alert('문의가 접수되었습니다. 감사합니다!');
+        this.reset();
+    });
 
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.placeholder = 'https://your-website-url.com';
-    input.style.cssText = `
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 10px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        box-sizing: border-box;
-    `;
-
-    const button = document.createElement('button');
-    button.textContent = '미리보기';
-    button.style.cssText = `
-        background-color: #0056b3;
-        color: #fff;
-        border: none;
-        padding: 10px 15px;
-        border-radius: 4px;
-        cursor: pointer;
-    `;
-
-    const previewArea = document.createElement('div');
-    previewArea.style.cssText = `
-        margin-top: 20px;
-        border: 2px dashed #ddd;
-        height: 300px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #666;
-        font-style: italic;
-    `;
-    previewArea.textContent = '여기에 웹사이트 미리보기가 표시됩니다.';
-    previewArea.style.display = 'none';
-
-    // 요소들을 조합
-    header.appendChild(codeIcon);
-    header.appendChild(title);
-    content.appendChild(input);
-    content.appendChild(button);
-    content.appendChild(previewArea);
-    container.appendChild(header);
-    container.appendChild(content);
-
-    // 컨테이너를 body에 추가
-    document.body.appendChild(container);
-
-    // 버튼 클릭 이벤트 처리
-    button.addEventListener('click', function() {
-        const url = input.value.trim();
-        if (url) {
-            previewArea.style.display = 'flex';
-            previewArea.textContent = `${url} 의 미리보기를 로드 중...`;
-            // 여기에 실제 미리보기 로직을 구현할 수 있습니다.
-            // 예: iframe 사용 또는 서버에서 스크린샷 가져오기
-            setTimeout(() => {
-                previewArea.textContent = `${url}의 미리보기입니다. (실제 구현 필요)`;
-            }, 1500);
+    // 스크롤에 따른 헤더 스타일 변경
+    window.addEventListener('scroll', function() {
+        const header = document.querySelector('header');
+        if (window.scrollY > 50) {
+            header.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
+            header.style.boxShadow = '0 2px 4px rgba(0,0,0,0.1)';
         } else {
-            alert('유효한 URL을 입력해주세요.');
+            header.style.backgroundColor = '#fff';
+            header.style.boxShadow = 'none';
         }
     });
 });
