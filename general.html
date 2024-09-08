@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>일반 타임캡슐 - 타임캡슐 서비스</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">타임캡슐</div>
+            <ul>
+                <li><a href="index.html">홈</a></li>
+                <li><a href="index.html#services">서비스</a></li>
+                <li><a href="index.html#about">소개</a></li>
+                <li><a href="index.html#contact">문의</a></li>
+            </ul>
+            <button id="login-btn" class="login-btn">로그인</button>
+        </nav>
+    </header>
+    <main>
+        <section id="general-timecapsule">
+            <h1>일반 타임캡슐</h1>
+            <p>정해진 크기의 박스(30cm x 20cm x 15cm)를 기준으로 타임캡슐을 이용할 수 있습니다.</p>
+            <p>소중한 물건이나 편지를 넣어 미래의 자신이나 사랑하는 사람에게 전달하세요.</p>
+            <form id="timecapsule-form">
+                <label for="open-date">개봉 날짜:</label>
+                <input type="date" id="open-date" required>
+                <label for="message">메시지:</label>
+                <textarea id="message" rows="4" required></textarea>
+                <button type="submit" class="btn">결제하기</button>
+            </form>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 타임캡슐 서비스. All rights reserved.</p>
+    </footer>
+
+    <!-- 로그인 팝업 (index.html과 동일) -->
+    <div id="login-popup" class="popup">
+        <div class="popup-content">
+            <span class="close">&times;</span>
+            <h2>로그인</h2>
+            <div class="login-buttons">
+                <button id="kakao-login-btn" class="login-btn kakao-btn">카카오 로그인</button>
+                <div class="g-signin2" data-onsuccess="onSignIn"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="script.js"></script>
+</body>
+</html>

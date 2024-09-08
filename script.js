@@ -6,6 +6,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const loginPopup = document.getElementById('login-popup');
     const myInfoPopup = document.getElementById('my-info-popup');
     const closeBtns = document.getElementsByClassName('close');
+    const serviceLinks = document.querySelectorAll('.service-link');
+
+    let isLoggedIn = false; // 로그인 상태 추적
 
     // 로그인 버튼 클릭 이벤트
     loginBtn.addEventListener('click', function() {
@@ -28,6 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     url: '/v2/user/me',
                     success: function(res) {
                         loginPopup.style.display = 'none';
+                        isLoggedIn = true;
                         showMyInfo(res.properties.nickname);
                     },
                     fail: function(error) {
@@ -46,6 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
     window.onSignIn = function(googleUser) {
         var profile = googleUser.getBasicProfile();
         loginPopup.style.display = 'none';
+        isLoggedIn = true;
         showMyInfo(profile.getName());
     };
 
@@ -70,6 +75,17 @@ document.addEventListener('DOMContentLoaded', function() {
         myInfoPopup.style.display = 'block';
     }
 
+    // 서비스 링크 클릭 이벤트
+    serviceLinks.forEach(function(link) {
+        link.addEventListener('click', function(e) {
+            if (!isLoggedIn) {
+                e.preventDefault();
+                alert('로그인 후 이용 가능합니다.');
+                loginPopup.style.display = 'block';
+            }
+        });
+    });
+
     // 스무스 스크롤 구현
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
@@ -82,18 +98,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // CTA 버튼 클릭 이벤트
     document.querySelector('.cta-btn').addEventListener('click', function() {
-        alert('타임캡슐 만들기 페이지로 이동합니다.');
-        // 실제 구현 시 타임캡슐 생성 페이지로 리다이렉트
-    });
-
-    // 서비스 링크 클릭 이벤트
-    document.querySelectorAll('.service-link').forEach(function(link) {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            const serviceType = this.getAttribute('data-service');
-            alert(`${serviceType} 타임캡슐 서비스를 시작합니다.`);
-            // 실제 구현 시 각 서비스 페이지로 리다이렉트
-        });
+        if (isLoggedIn) {
+            alert('타임캡슐 만들기 페이지로 이동합니다.');
+            // 실제 구현 시 타임캡슐 생성 페이지로 리다이렉트
+        } else {
+            alert('로그인 후 이용 가능합니다.');
+            loginPopup.style.display = 'block';
+        }
     });
 
     // 문의하기 폼 제출 이벤트
@@ -114,4 +125,19 @@ document.addEventListener('DOMContentLoaded', function() {
             header.style.boxShadow = 'none';
         }
     });
+
+    // 타임캡슐 폼 제출 이벤트 (일반 및 그룹 타임캡슐 페이지용)
+    const timecapsuleForm = document.getElementById('timecapsule-form') || document.getElementById('group-timecapsule-form');
+    if (timecapsuleForm) {
+        timecapsuleForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (isLoggedIn) {
+                alert('결제 페이지로 이동합니다. 결제 후 다음 주소로 타임캡슐을 발송해 주세요: \n경기도 화성시 마도면 두곡리 121-6번지');
+                // 실제 구현 시 결제 페이지로 리다이렉트
+            } else {
+                alert('로그인 후 이용 가능합니다.');
+                // 실제 구현 시 로그인 페이지로 리다이렉트 또는 로그인 팝업 표시
+            }
+        });
+    }
 });
