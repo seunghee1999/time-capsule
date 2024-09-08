@@ -1,0 +1,9 @@
+# .gitignore
+.env
+
+# mac
+.DS_Store
+
+# node
+node_modules/
+.env
