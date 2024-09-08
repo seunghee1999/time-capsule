@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const loginPopup = document.getElementById('login-popup');
     const myInfoPopup = document.getElementById('my-info-popup');
     const closeBtns = document.getElementsByClassName('close');
-    const googleLoginBtn = document.getElementById('google-login-btn'); // 수정된 부분
+    const googleLoginBtn = document.getElementById('google-login-btn');
 
     let isLoggedIn = false;
 
@@ -48,23 +48,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 alert('카카오 로그인에 실패했습니다.');
             }
         });
-    });
-
-    // Google 로그인 버튼 클릭 이벤트
-    googleLoginBtn.addEventListener('click', function() {
-        const auth = firebase.auth();
-        const provider = new firebase.auth.GoogleAuthProvider();
-        
-        auth.signInWithPopup(provider)
-            .then((result) => {
-                const user = result.user;
-                loginPopup.style.display = 'none';
-                isLoggedIn = true;
-                showMyInfo(user.displayName);
-            }).catch((error) => {
-                console.error("Google 로그인 실패:", error);
-                alert("Google 로그인에 실패했습니다.");
-            });
     });
 
     function showMyInfo(name) {
