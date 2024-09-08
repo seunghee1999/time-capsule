@@ -2,15 +2,23 @@
 Kakao.init('YOUR_KAKAO_APP_KEY'); // 실제 앱 키로 교체하세요
 
 document.addEventListener('DOMContentLoaded', function() {
-    // 스무스 스크롤 구현
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
-            });
-        });
+    const loginBtn = document.getElementById('login-btn');
+    const loginPopup = document.getElementById('login-popup');
+    const myInfoPopup = document.getElementById('my-info-popup');
+    const closeBtns = document.getElementsByClassName('close');
+
+    // 로그인 버튼 클릭 이벤트
+    loginBtn.addEventListener('click', function() {
+        loginPopup.style.display = 'block';
     });
+
+    // 팝업 닫기 버튼 이벤트
+    for (let closeBtn of closeBtns) {
+        closeBtn.addEventListener('click', function() {
+            loginPopup.style.display = 'none';
+            myInfoPopup.style.display = 'none';
+        });
+    }
 
     // 카카오 로그인 버튼 클릭 이벤트
     document.getElementById('kakao-login-btn').addEventListener('click', function() {
@@ -19,8 +27,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 Kakao.API.request({
                     url: '/v2/user/me',
                     success: function(res) {
-                        alert(`${res.properties.nickname}님, 환영합니다!`);
-                        // 여기에 로그인 후 처리 로직을 추가하세요
+                        loginPopup.style.display = 'none';
+                        showMyInfo(res.properties.nickname);
                     },
                     fail: function(error) {
                         alert('로그인 처리 중 오류가 발생했습니다.');
@@ -31,6 +39,44 @@ document.addEventListener('DOMContentLoaded', function() {
             fail: function(err) {
                 alert('카카오 로그인에 실패했습니다.');
             }
+        });
+    });
+
+    // 구글 로그인 성공 콜백
+    window.onSignIn = function(googleUser) {
+        var profile = googleUser.getBasicProfile();
+        loginPopup.style.display = 'none';
+        showMyInfo(profile.getName());
+    };
+
+    function showMyInfo(name) {
+        document.getElementById('user-info').innerHTML = `<p>안녕하세요, ${name}님!</p>`;
+        
+        // 임시 타임캡슐 데이터
+        const timecapsules = [
+            { name: "졸업 20주년 기념", dday: 365 },
+            { name: "첫 월급 기념", dday: 30 },
+            { name: "결혼기념일", dday: 180 }
+        ];
+
+        const timecapsulesList = document.getElementById('my-timecapsules');
+        timecapsulesList.innerHTML = '';
+        timecapsules.forEach(capsule => {
+            const li = document.createElement('li');
+            li.textContent = `${capsule.name} (D-${capsule.dday})`;
+            timecapsulesList.appendChild(li);
+        });
+
+        myInfoPopup.style.display = 'block';
+    }
+
+    // 스무스 스크롤 구현
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
         });
     });
 

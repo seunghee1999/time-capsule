@@ -6,6 +6,8 @@
     <title>타임캡슐 서비스</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com">
 </head>
 <body>
     <header>
@@ -17,7 +19,7 @@
                 <li><a href="#about">소개</a></li>
                 <li><a href="#contact">문의</a></li>
             </ul>
-            <button id="kakao-login-btn" class="login-btn">카카오 로그인</button>
+            <button id="login-btn" class="login-btn">로그인</button>
         </nav>
     </header>
     <main>
@@ -30,24 +32,19 @@
             <h2>타임캡슐 서비스</h2>
             <div class="service-grid">
                 <div class="service-item">
-                    <h3>편지 타임캡슐</h3>
-                    <p>미래의 나 또는 소중한 사람에게 편지 보내기</p>
-                    <a href="#" class="service-link" data-service="letter">시작하기</a>
-                </div>
-                <div class="service-item">
-                    <h3>물건 타임캡슐</h3>
-                    <p>의미 있는 물건을 안전하게 보관하고 전달</p>
-                    <a href="#" class="service-link" data-service="object">시작하기</a>
-                </div>
-                <div class="service-item">
-                    <h3>디지털 타임캡슐</h3>
-                    <p>사진, 영상 등 디지털 추억을 안전하게 저장</p>
-                    <a href="#" class="service-link" data-service="digital">시작하기</a>
+                    <h3>일반 타임캡슐</h3>
+                    <p>편지나 물건을 미래의 나 또는 소중한 사람에게 전달</p>
+                    <a href="#" class="service-link" data-service="general">시작하기</a>
                 </div>
                 <div class="service-item">
                     <h3>그룹 타임캡슐</h3>
                     <p>가족, 친구들과 함께 만드는 특별한 추억</p>
                     <a href="#" class="service-link" data-service="group">시작하기</a>
+                </div>
+                <div class="service-item">
+                    <h3>디지털 타임캡슐</h3>
+                    <p>사진, 영상 등 디지털 추억을 안전하게 저장</p>
+                    <a href="#" class="service-link" data-service="digital">시작하기</a>
                 </div>
             </div>
         </section>
@@ -68,6 +65,28 @@
     <footer>
         <p>&copy; 2024 타임캡슐 서비스. All rights reserved.</p>
     </footer>
+
+    <!-- 로그인 팝업 -->
+    <div id="login-popup" class="popup">
+        <div class="popup-content">
+            <span class="close">&times;</span>
+            <h2>로그인</h2>
+            <button id="kakao-login-btn" class="login-btn">카카오 로그인</button>
+            <div class="g-signin2" data-onsuccess="onSignIn"></div>
+        </div>
+    </div>
+
+    <!-- 내 정보 팝업 -->
+    <div id="my-info-popup" class="popup">
+        <div class="popup-content">
+            <span class="close">&times;</span>
+            <h2>내 정보</h2>
+            <div id="user-info"></div>
+            <h3>내 타임캡슐 목록</h3>
+            <ul id="my-timecapsules"></ul>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
